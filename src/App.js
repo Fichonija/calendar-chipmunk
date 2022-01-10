@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 
 import { CALENDAR_CHIPMUNK_CLIENT_ID, CALENDAR_CHIPMUNK_REDIRECT_URI, CALENDAR_CHIPMUNK_SCOPE } from "./lib/constants";
 import Calendar from "./components/calendar";
@@ -7,13 +7,17 @@ import Calendar from "./components/calendar";
 import "./App.css";
 
 const App = () => {
-  const [accessToken, setAccessToken] = useState(null);
+  const [loginData, setLoginData] = useState(null);
 
   const handleLogin = (loginResponse) => {
     console.log(loginResponse);
-    setAccessToken(loginResponse.tokenObj.access_token);
+    setLoginData({
+      name: loginResponse.profileObj.name,
+      email: loginResponse.profileObj.email,
+      token: loginResponse.tokenObj.access_token,
+    });
   };
-  if (!accessToken) {
+  if (!loginData) {
     return (
       <div className="container flex-column">
         <div>Hello World! Login to google to continue</div>
@@ -34,7 +38,7 @@ const App = () => {
   } else {
     return (
       <div className="container flex-column">
-        <Calendar userName></Calendar>
+        <Calendar username={loginData.name} email={loginData.email} token={loginData.token}></Calendar>
       </div>
     );
   }
