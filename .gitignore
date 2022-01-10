@@ -24,3 +24,7 @@ yarn-error.log*
 
 # user
 google.oauth.config.json
+todo.md
+
+# env
+.vscode
