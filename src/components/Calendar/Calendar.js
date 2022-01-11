@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import CardList from "../CardList/CardList";
+import EventList from "../Event/EventList/EventList";
 import { fetchCalendarEvents } from "../../lib/calendarApi";
 
 import "./Calendar.css";
@@ -25,7 +25,7 @@ const Calendar = (props) => {
         days.
       </p>
       {eventsGroup.map((eventGroup) => (
-        <CardList key={eventGroup.key} listTitle={eventGroup.key} listItems={eventGroup.events}></CardList>
+        <EventList key={eventGroup.key} title={eventGroup.key} events={eventGroup.events}></EventList>
       ))}
     </div>
   );
