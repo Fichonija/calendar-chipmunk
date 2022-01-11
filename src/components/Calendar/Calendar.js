@@ -10,7 +10,7 @@ const Calendar = (props) => {
   console.log(events);
 
   useEffect(() => {
-    fetchCalendarEvents(props.email, props.token).then((eventsResult) => setEvents(eventsResult));
+    fetchCalendarEvents(props.token, props.email).then((eventsResult) => setEvents(eventsResult));
   }, []);
 
   return (
@@ -20,7 +20,7 @@ const Calendar = (props) => {
         <ul>
           {events.map((event) => (
             <li key={event.id}>
-              <Card title={event.summary}></Card>
+              <Card title={event.summary} startTime={event.start.toLocaleString()} endTime={event.end.toLocaleString()}></Card>
             </li>
           ))}
         </ul>
