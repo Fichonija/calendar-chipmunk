@@ -1,28 +1,39 @@
-import { useState } from "react";
-import { GoogleLogin } from "react-google-login";
+import { useNavigate } from "react-router-dom";
+import { useGoogleLogin } from "react-google-login";
+
 import { CALENDAR_CHIPMUNK_CLIENT_ID, CALENDAR_CHIPMUNK_REDIRECT_URI, CALENDAR_CHIPMUNK_SCOPE } from "../../lib/constants";
+import { ReactComponent as GoogleIcon } from "./google.svg";
+import "./login.css";
 
 const Login = (props) => {
-  const [loginData, setLoginData] = useState(null);
+  const navigate = useNavigate();
 
-  const handleLogin = (loginResponse) => {
-    setLoginData({
-      name: loginResponse.profileObj.name,
-      email: loginResponse.profileObj.email,
-      token: loginResponse.tokenObj.access_token,
+  const handleLoginSuccess = (loginResponse) => {
+    console.log(loginResponse);
+    navigate("/calendar", {
+      state: {
+        name: loginResponse.profileObj.name,
+        email: loginResponse.profileObj.email,
+        token: loginResponse.tokenObj.access_token,
+      },
+      replace: false,
     });
   };
+  const { signIn } = useGoogleLogin({
+    clientId: CALENDAR_CHIPMUNK_CLIENT_ID,
+    uxMode: "redirect",
+    redirectUri: CALENDAR_CHIPMUNK_REDIRECT_URI,
+    scope: CALENDAR_CHIPMUNK_SCOPE,
+    onSuccess: handleLoginSuccess,
+    onFailure: (response) => console.log(response),
+    isSignedIn: true,
+  });
+
   return (
-    <GoogleLogin
-      clientId={CALENDAR_CHIPMUNK_CLIENT_ID}
-      uxMode="redirect"
-      redirectUri={CALENDAR_CHIPMUNK_REDIRECT_URI}
-      scope={CALENDAR_CHIPMUNK_SCOPE}
-      buttonText="Sing in with google to continue"
-      onSuccess={handleLogin}
-      onFailure={(response) => console.log(response)}
-      isSignedIn="true"
-    />
+    <button onClick={signIn} className="login-button">
+      <GoogleIcon className="login-button-icon" />
+      <span className="login-button-text">Sign in with google</span>
+    </button>
   );
 };
 
