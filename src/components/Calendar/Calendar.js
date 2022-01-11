@@ -1,32 +1,26 @@
 import { useEffect, useState } from "react";
 
-import Card from "../Card/Card";
+import CardList from "../CardList/CardList";
 import { fetchCalendarEvents } from "../../lib/calendarApi";
 
 import "./Calendar.css";
 
 const Calendar = (props) => {
-  const [events, setEvents] = useState([]);
-  console.log(events);
+  const [eventsGroup, setEventsGroup] = useState([]);
+  const [numberOfDays, setNumberOfDays] = useState(7);
 
   useEffect(() => {
-    fetchCalendarEvents(props.token, props.email, props.numberOfDays).then((eventsResult) => setEvents(eventsResult));
-  }, [props.email, props.numberOfDays, props.token]);
+    fetchCalendarEvents(props.token, props.email, numberOfDays).then((eventsResult) => setEventsGroup(eventsResult));
+  }, [props.email, props.token, numberOfDays]);
 
   return (
     <div>
       <p>
-        Hello {props.username}. Showing results for {props.numberOfDays ? props.numberOfDays : 7} days.
+        Hello {props.username}. Showing results for {numberOfDays} days.
       </p>
-      {events && (
-        <ul>
-          {events.map((event) => (
-            <li key={event.id}>
-              <Card title={event.summary} startTime={event.start.toLocaleString()} endTime={event.end.toLocaleString()}></Card>
-            </li>
-          ))}
-        </ul>
-      )}
+      {eventsGroup.map((eventGroup) => (
+        <CardList key={eventGroup.startTimeFormatted} listTitle={eventGroup.startTimeFormatted} listItems={eventGroup.events}></CardList>
+      ))}
     </div>
   );
 };

@@ -6,9 +6,7 @@ const Card = (props) => {
       <div className="card-container">
         <h4>{props.title}</h4>
         <p>
-          Start: {props.startTime}
-          <br />
-          End: {props.endTime}
+          {props.startTime} - {props.endTime}
         </p>
         <p>{props.details}</p>
       </div>
