@@ -17,3 +17,12 @@ code {
 .container {
   padding: 2rem;
 }
+
+.center {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.text-center {
+  text-align: center;
+}

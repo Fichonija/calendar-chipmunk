@@ -4,7 +4,7 @@ import Layout from "./components/Layout";
 const App = () => {
   return (
     <Layout>
-      <div>Hello mother!</div>
+      <h1 className="text-center">Welcome to Calendar Chipmunk</h1>
       <Outlet />
     </Layout>
   );

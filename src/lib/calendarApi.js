@@ -1,5 +1,4 @@
 import getWeekOfMonth from "date-fns/getWeekOfMonth";
-
 import { CALENDAR_API_ROOT } from "../lib/constants";
 
 export const fetchCalendarEvents = async (accessToken, calendarId, forNumberOfDays = 7) => {
