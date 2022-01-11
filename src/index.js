@@ -12,6 +12,7 @@ ReactDOM.render(
     <Routes>
       <Route path="/" element={<App />}>
         <Route index path="login" element={<Login />} />
+        <Route path="*" element={<div>404 page not found</div>} />
       </Route>
       {/* <Route path="invoices" element={<Invoices />} /> */}
     </Routes>
