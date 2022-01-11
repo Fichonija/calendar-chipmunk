@@ -9,7 +9,7 @@ export const fetchCalendarEvents = async (accessToken, calendarId, forNumberOfDa
     const timeMax = new Date(today);
     timeMax.setDate(timeMax.getDate() + forNumberOfDays);
 
-    const calendarResponse = await fetch(
+    const calendarEventsResponse = await fetch(
       `${CALENDAR_API_ROOT}/${calendarId}/events?timeMin=${today.toISOString()}&timeMax=${timeMax.toISOString()}&singleEvents=true&orderBy=startTime`,
       {
         headers: {
@@ -17,17 +17,20 @@ export const fetchCalendarEvents = async (accessToken, calendarId, forNumberOfDa
         },
       }
     );
-    const calendarResult = await calendarResponse.json();
+    const calendarEvents = await calendarEventsResponse.json();
 
-    const events = calendarResult.items.map((event) => normalizeEvent(event));
-    const eventsGroup = groupEventsByDate(events, forNumberOfDays >= 30 ? "week" : "day");
-    console.log(eventsGroup);
-    return eventsGroup;
+    return getEventsGroup(calendarEvents, forNumberOfDays >= 30 ? "week" : "day");
   } catch (error) {
     console.log(error.message);
     return null;
   }
 };
+
+function getEventsGroup(calendarEvents, groupBy = "day") {
+  const events = calendarEvents.items.map((event) => normalizeEvent(event));
+  const eventsGroup = groupEventsByDate(events, groupBy);
+  return eventsGroup;
+}
 
 const normalizeEvent = (event) => {
   return { id: event.id, summary: event.summary, start: new Date(event.start.dateTime), end: new Date(event.end.dateTime) };
@@ -40,7 +43,7 @@ const groupEventsByDate = (events, groupBy = "day") => {
     const key =
       groupBy === "day"
         ? event.start.toLocaleString("hr-HR", { dateStyle: "full" })
-        : `${event.start.toLocaleString("hr-HR", { month: "long" })} ${getWeekOfMonth(event.start)}. tjedan`;
+        : `${event.start.toLocaleString("hr-HR", { month: "long" })}, ${getWeekOfMonth(event.start)}. tjedan`;
 
     const foundEvent = eventsGroup.find((eg) => eg.key === key);
     if (foundEvent) {
