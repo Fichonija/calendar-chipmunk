@@ -25,7 +25,7 @@ const Calendar = (props) => {
         days.
       </p>
       {eventsGroup.map((eventGroup) => (
-        <CardList key={eventGroup.startTimeFormatted} listTitle={eventGroup.startTimeFormatted} listItems={eventGroup.events}></CardList>
+        <CardList key={eventGroup.key} listTitle={eventGroup.key} listItems={eventGroup.events}></CardList>
       ))}
     </div>
   );
