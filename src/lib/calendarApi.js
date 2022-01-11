@@ -17,14 +17,34 @@ export const fetchCalendarEvents = async (accessToken, calendarId, forNumberOfDa
     );
     const calendarResult = await calendarResponse.json();
 
-    const events = calendarResult.items.map((event) => mapEvent(event));
-    return events;
+    const events = calendarResult.items.map((event) => normalizeEvent(event));
+    const eventsGrouped = groupEventsByDate(events);
+    console.log(eventsGrouped);
+    return eventsGrouped;
   } catch (error) {
     console.log(error.message);
     return null;
   }
 };
 
-const mapEvent = (event) => {
+const normalizeEvent = (event) => {
   return { id: event.id, summary: event.summary, start: new Date(event.start.dateTime), end: new Date(event.end.dateTime) };
+};
+
+const groupEventsByDate = (events) => {
+  const eventsGrouped = [];
+
+  for (const event of events) {
+    const startTimeFormatted = event.start.toLocaleString("hr-HR", { dateStyle: "full" });
+    const foundEvent = eventsGrouped.find((eg) => eg.startTimeFormatted === startTimeFormatted);
+    if (foundEvent) {
+      foundEvent.events.push(event);
+    } else {
+      eventsGrouped.push({
+        startTimeFormatted,
+        events: [event],
+      });
+    }
+  }
+  return eventsGrouped;
 };
