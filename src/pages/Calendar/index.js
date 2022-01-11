@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import EventList from "../Event/EventList/EventList";
+import EventList from "../../components/Event/EventList/EventList";
 import { fetchCalendarEvents } from "../../lib/calendarApi";
 
-import "./Calendar.css";
+import "./calendar.css";
 
 const Calendar = (props) => {
   const [eventsGroup, setEventsGroup] = useState([]);
