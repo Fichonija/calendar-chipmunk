@@ -1,11 +1,11 @@
 import EventCard from "../EventCard/EventCard";
 
-const EventList = ({ title, events }) => {
+const EventList = ({ title, events, showEventDates = false }) => {
   return (
     <ul>
       <h3>{title}</h3>
       {events.map((event) => (
-        <EventCard key={event.id} event={event}></EventCard>
+        <EventCard key={event.id} event={event} showEventDate={showEventDates}></EventCard>
       ))}
     </ul>
   );

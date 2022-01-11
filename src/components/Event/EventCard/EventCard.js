@@ -1,11 +1,10 @@
 import Card from "../../Card/Card";
+import { getEventDurationFormatted } from "../../../lib/utility";
 
 const EventCard = ({ event, showEventDate = false }) => {
-  const eventDate = showEventDate
-    ? `${event.start.toLocaleString("hr-HR", { dateStyle: "full", timeStyle: "full" })} - ${event.end.toLocaleTimeString()}`
-    : `${event.start.toLocaleTimeString()} - ${event.end.toLocaleTimeString()}`;
+  const eventDuration = getEventDurationFormatted(event, showEventDate);
 
-  return <Card title={event.summary} subtitle={eventDate}></Card>;
+  return <Card title={event.summary} subtitle={eventDuration}></Card>;
 };
 
 export default EventCard;

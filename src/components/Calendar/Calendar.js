@@ -25,7 +25,7 @@ const Calendar = (props) => {
         days.
       </p>
       {eventsGroup.map((eventGroup) => (
-        <EventList key={eventGroup.key} title={eventGroup.key} events={eventGroup.events}></EventList>
+        <EventList key={eventGroup.key} title={eventGroup.key} events={eventGroup.events} showEventDates={numberOfDays >= 30}></EventList>
       ))}
     </div>
   );
