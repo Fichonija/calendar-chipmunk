@@ -16,7 +16,13 @@ const Calendar = (props) => {
   return (
     <div>
       <p>
-        Hello {props.username}. Showing results for {numberOfDays} days.
+        Hello {props.username}. Showing results for{" "}
+        <select value={numberOfDays} onChange={(event) => setNumberOfDays(+event.target.value)}>
+          <option value="1">1</option>
+          <option value="7">7</option>
+          <option value="30">30</option>
+        </select>{" "}
+        days.
       </p>
       {eventsGroup.map((eventGroup) => (
         <CardList key={eventGroup.startTimeFormatted} listTitle={eventGroup.startTimeFormatted} listItems={eventGroup.events}></CardList>
