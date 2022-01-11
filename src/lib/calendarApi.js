@@ -9,9 +9,15 @@ export const fetchCalendarEvents = async (calendarId, accessToken) => {
       },
     });
     const calendarResult = await calendarResponse.json();
-    return calendarResult;
+
+    const events = calendarResult.items.map((event) => mapEvent(event));
+    return events;
   } catch (error) {
     console.log(error.message);
     return null;
   }
+};
+
+const mapEvent = (event) => {
+  return { id: event.id, summary: event.summary, start: event.start.datetime, end: event.end.datetime };
 };

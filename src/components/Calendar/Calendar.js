@@ -7,9 +7,10 @@ import "./Calendar.css";
 
 const Calendar = (props) => {
   const [events, setEvents] = useState([]);
+  console.log(events);
 
   useEffect(() => {
-    fetchCalendarEvents(props.email, props.token).then((result) => setEvents(result.items));
+    fetchCalendarEvents(props.email, props.token).then((eventsResult) => setEvents(eventsResult));
   }, []);
 
   return (
