@@ -38,7 +38,7 @@ const App = () => {
   } else {
     return (
       <div className="container flex-column">
-        <Calendar username={loginData.name} email={loginData.email} token={loginData.token}></Calendar>
+        <Calendar username={loginData.name} email={loginData.email} token={loginData.token} numberOfDays={10}></Calendar>
       </div>
     );
   }

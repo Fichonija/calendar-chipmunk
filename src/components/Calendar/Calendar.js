@@ -10,12 +10,14 @@ const Calendar = (props) => {
   console.log(events);
 
   useEffect(() => {
-    fetchCalendarEvents(props.token, props.email).then((eventsResult) => setEvents(eventsResult));
-  }, []);
+    fetchCalendarEvents(props.token, props.email, props.numberOfDays).then((eventsResult) => setEvents(eventsResult));
+  }, [props.email, props.numberOfDays, props.token]);
 
   return (
     <div>
-      <p>Hello {props.username}</p>
+      <p>
+        Hello {props.username}. Showing results for {props.numberOfDays ? props.numberOfDays : 7} days.
+      </p>
       {events && (
         <ul>
           {events.map((event) => (
