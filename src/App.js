@@ -1,47 +1,13 @@
-import { useState } from "react";
-import { GoogleLogin } from "react-google-login";
-
-import { CALENDAR_CHIPMUNK_CLIENT_ID, CALENDAR_CHIPMUNK_REDIRECT_URI, CALENDAR_CHIPMUNK_SCOPE } from "./lib/constants";
-import Calendar from "./components/Calendar/Calendar";
-
-import "./App.css";
+import { Outlet } from "react-router-dom";
+import Layout from "./components/Layout";
 
 const App = () => {
-  const [loginData, setLoginData] = useState(null);
-
-  const handleLogin = (loginResponse) => {
-    console.log(loginResponse);
-    setLoginData({
-      name: loginResponse.profileObj.name,
-      email: loginResponse.profileObj.email,
-      token: loginResponse.tokenObj.access_token,
-    });
-  };
-  if (!loginData) {
-    return (
-      <div className="container flex-column">
-        <div>Hello World! Login to google to continue</div>
-        <div className="flex">
-          <GoogleLogin
-            clientId={CALENDAR_CHIPMUNK_CLIENT_ID}
-            uxMode="redirect"
-            redirectUri={CALENDAR_CHIPMUNK_REDIRECT_URI}
-            scope={CALENDAR_CHIPMUNK_SCOPE}
-            buttonText="Login"
-            onSuccess={handleLogin}
-            onFailure={(response) => console.log(response)}
-            isSignedIn="true"
-          />
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className="container flex-column">
-        <Calendar username={loginData.name} email={loginData.email} token={loginData.token}></Calendar>
-      </div>
-    );
-  }
+  return (
+    <Layout>
+      <div>Hello mother!</div>
+      <Outlet />
+    </Layout>
+  );
 };
 
 export default App;
