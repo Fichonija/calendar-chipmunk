@@ -2,7 +2,7 @@ import { useState } from "react";
 import { GoogleLogin } from "react-google-login";
 
 import { CALENDAR_CHIPMUNK_CLIENT_ID, CALENDAR_CHIPMUNK_REDIRECT_URI, CALENDAR_CHIPMUNK_SCOPE } from "./lib/constants";
-import Calendar from "./components/calendar";
+import Calendar from "./components/Calendar/Calendar";
 
 import "./App.css";
 
