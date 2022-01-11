@@ -1,14 +1,12 @@
 import "./Card.css";
 
-const Card = (props) => {
+const Card = ({ title, subtitle, content }) => {
   return (
     <div className="card">
       <div className="card-container">
-        <h4>{props.title}</h4>
-        <p>
-          {props.startTime} - {props.endTime}
-        </p>
-        <p>{props.details}</p>
+        <h4 className="card-title">{title}</h4>
+        <p className="card-subtitle">{subtitle}</p>
+        <p className="card-content">{content}</p>
       </div>
     </div>
   );
