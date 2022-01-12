@@ -10,6 +10,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+a,
+button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .header {
   background-color: black;
 }
