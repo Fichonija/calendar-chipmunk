@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import useLogin from "../../lib/hooks";
+import { useLogin } from "../../lib/hooks";
 import AuthService from "../../lib/authService";
 import { ReactComponent as GoogleIcon } from "./google.svg";
 import "./login.css";

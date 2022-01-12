@@ -1,7 +1,8 @@
 import { useGoogleLogin } from "react-google-login";
 import { CALENDAR_CHIPMUNK_CLIENT_ID, CALENDAR_CHIPMUNK_REDIRECT_URI, CALENDAR_CHIPMUNK_SCOPE } from "../constants";
+import AuthService from "../authService";
 
-const useLogin = (onSuccess, onFailure) => {
+export const useLogin = (onSuccess, onFailure) => {
   return useGoogleLogin({
     clientId: CALENDAR_CHIPMUNK_CLIENT_ID,
     uxMode: "redirect",
@@ -13,4 +14,11 @@ const useLogin = (onSuccess, onFailure) => {
   });
 };
 
-export default useLogin;
+export const useAuth = () => {
+  const user = AuthService.getUserData();
+  const token = AuthService.getAccessToken();
+  return {
+    user,
+    token,
+  };
+};
