@@ -1,21 +1,16 @@
 import getWeekOfMonth from "date-fns/getWeekOfMonth";
+import AuthService from "./authService";
 import { CALENDAR_API_ROOT } from "../lib/constants";
 
-export const fetchCalendarEvents = async (accessToken, calendarId, forNumberOfDays = 7) => {
+export const fetchCalendarEvents = async (forNumberOfDays = 7) => {
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const timeMax = new Date(today);
-    timeMax.setDate(timeMax.getDate() + forNumberOfDays);
+    const token = AuthService.getAccessToken();
 
-    const calendarEventsResponse = await fetch(
-      `${CALENDAR_API_ROOT}/${calendarId}/events?timeMin=${today.toISOString()}&timeMax=${timeMax.toISOString()}&singleEvents=true&orderBy=startTime`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const calendarEventsResponse = await fetch(getEventsApiUrl(forNumberOfDays), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const calendarEvents = await calendarEventsResponse.json();
 
     return getEventsGroup(calendarEvents, forNumberOfDays >= 30 ? "week" : "day");
@@ -25,11 +20,25 @@ export const fetchCalendarEvents = async (accessToken, calendarId, forNumberOfDa
   }
 };
 
-function getEventsGroup(calendarEvents, groupBy = "day") {
+const getEventsApiUrl = (forNumberOfDays) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const timeMax = new Date(today);
+  timeMax.setDate(timeMax.getDate() + forNumberOfDays);
+
+  const user = AuthService.getUserData();
+
+  const eventsApiUrl = `${CALENDAR_API_ROOT}/${
+    user.email
+  }/events?timeMin=${today.toISOString()}&timeMax=${timeMax.toISOString()}&singleEvents=true&orderBy=startTime`;
+  return eventsApiUrl;
+};
+
+const getEventsGroup = (calendarEvents, groupBy = "day") => {
   const events = calendarEvents.items.map((event) => normalizeEvent(event));
   const eventsGroup = groupEventsByDate(events, groupBy);
   return eventsGroup;
-}
+};
 
 const normalizeEvent = (event) => {
   return { id: event.id, summary: event.summary, start: new Date(event.start.dateTime), end: new Date(event.end.dateTime) };

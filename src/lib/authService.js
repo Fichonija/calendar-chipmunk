@@ -4,8 +4,6 @@ const expiresAt_key = "expiresAt";
 const expiresIn_key = "expiresIn";
 
 const AuthService = {
-  isLoggedIn: false,
-
   saveLoginData({ user, token, expiresAt, expiresIn }) {
     localStorage.setItem(user_key, JSON.stringify(user));
     localStorage.setItem(token_key, token);
@@ -26,19 +24,13 @@ const AuthService = {
   },
 
   getAccessToken() {
-    if (this.isLoggedIn) {
-      const token = localStorage.getItem(token_key);
-      return token;
-    }
-    return null;
+    const token = localStorage.getItem(token_key);
+    return token;
   },
 
   getUserData() {
-    if (this.isLoggedIn) {
-      const user = JSON.parse(localStorage.getItem(user_key));
-      return user;
-    }
-    return null;
+    const user = JSON.parse(localStorage.getItem(user_key));
+    return user;
   },
 };
 
