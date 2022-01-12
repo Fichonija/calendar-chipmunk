@@ -1,5 +1,12 @@
-.header-title {
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.header-title,
+.header-user {
   margin: 0;
   padding: 1rem;
-  color: white;
 }
