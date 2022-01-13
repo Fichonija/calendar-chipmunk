@@ -1,4 +1,4 @@
-import Modal from "..";
+import Modal from "../modal";
 
 const ConfirmModal = ({ isVisible, title, body, onConfirm, onClose }) => {
   const footer = (
