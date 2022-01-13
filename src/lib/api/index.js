@@ -1,5 +1,5 @@
 import getWeekOfMonth from "date-fns/getWeekOfMonth";
-import AuthService from "../authService";
+import AuthService from "../services";
 import { CALENDAR_API_ROOT } from "../constants";
 
 export const fetchCalendarEvents = async (forNumberOfDays = 7) => {

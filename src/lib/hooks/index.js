@@ -1,6 +1,6 @@
 import { useGoogleLogin } from "react-google-login";
 import { CALENDAR_CHIPMUNK_CLIENT_ID, CALENDAR_CHIPMUNK_REDIRECT_URI, CALENDAR_CHIPMUNK_SCOPE } from "../constants";
-import AuthService from "../authService";
+import AuthService from "../services";
 
 export const useLogin = (onSuccess, onFailure) => {
   return useGoogleLogin({
