@@ -1,4 +1,4 @@
-import Card from "../../Card/Card";
+import Card from "../../card";
 import { getEventDurationFormatted } from "../../../lib/utility";
 
 const EventCard = ({ event, showEventDate = false }) => {

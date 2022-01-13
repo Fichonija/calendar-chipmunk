@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import App from "./App";
-import Login from "./pages/Login";
-import Calendar from "./pages/Calendar";
+import Login from "./pages/login";
+import Calendar from "./pages/calendar";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 

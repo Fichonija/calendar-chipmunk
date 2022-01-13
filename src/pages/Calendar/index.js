@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Modal from "../../components/Modal";
+import Modal from "../../components/modal";
 import EventForm from "../../components/Event/EventForm";
-import EventList from "../../components/Event/EventList/EventList";
+import EventList from "../../components/Event/EventList";
 import { fetchCalendarEvents, createCalendarEvent } from "../../lib/api";
 
 import "./calendar.css";

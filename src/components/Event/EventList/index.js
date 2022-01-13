@@ -1,4 +1,4 @@
-import EventCard from "../EventCard/EventCard";
+import EventCard from "../EventCard";
 
 const EventList = ({ title, events, showEventDates = false }) => {
   return (
