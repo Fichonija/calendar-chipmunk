@@ -9,16 +9,18 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />}>
-        <Route index element={<Login />} />
-        <Route path="login" element={<Login />} />
-        <Route path="calendar" element={<Calendar />} />
-        <Route path="*" element={<div>404 page not found</div>} />
-      </Route>
-    </Routes>
-  </BrowserRouter>,
+  <React.StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route index element={<Login />} />
+          <Route path="login" element={<Login />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="*" element={<div>404 page not found</div>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  </React.StrictMode>,
   document.getElementById("root")
 );
 

@@ -76,3 +76,14 @@ export const createCalendarEvent = async (event) => {
   console.log("Created event: " + createEventResponse);
   return createEventResponse.ok;
 };
+
+export const deleteCalendarEvent = async (eventId) => {
+  const deleteEventResponse = await fetch(`${getEventsApiBaseUrl()}/${eventId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${AuthService.getAccessToken()}`,
+    },
+  });
+  console.log(deleteEventResponse);
+  return deleteEventResponse.ok;
+};

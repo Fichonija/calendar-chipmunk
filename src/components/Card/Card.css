@@ -11,3 +11,23 @@
 .card-container {
   padding: 2px 16px;
 }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 1em; */
+}
+
+.card-close {
+  color: black;
+  float: right;
+  font-size: 42px;
+}
+
+.card-close:hover,
+.card-close:focus {
+  color: red;
+  text-decoration: none;
+  cursor: pointer;
+}
