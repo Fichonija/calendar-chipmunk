@@ -5,12 +5,13 @@ import { ReactComponent as GoogleIcon } from "./google.svg";
 import "./login.css";
 
 const Login = (props) => {
-  const handleLoginSuccess = ({ profileObj: user, tokenObj: { access_token: token, expires_at: expiresAt, expires_in: expiresIn } }) => {
+  const handleLoginSuccess = (loginResponse) => {
+    console.log(loginResponse);
     AuthService.saveLoginData({
-      user,
-      token,
-      expiresAt,
-      expiresIn,
+      user: loginResponse.profileObj,
+      token: loginResponse.tokenObj.access_token,
+      expiresAt: loginResponse.tokenObj.expires_at,
+      expiresIn: loginResponse.tokenObj.expires_in,
     });
     navigate("/calendar");
   };
