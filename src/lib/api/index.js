@@ -3,6 +3,10 @@ import AuthService from "../services";
 import { CALENDAR_API_ROOT } from "../constants";
 
 export const fetchCalendarEvents = async (forNumberOfDays = 7) => {
+  if (!AuthService.isSignedIn()) {
+    return;
+  }
+
   const calendarEventsResponse = await fetch(getEventsApiGetUrl(forNumberOfDays), {
     headers: {
       Authorization: `Bearer ${AuthService.getAccessToken()}`,

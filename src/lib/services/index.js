@@ -28,6 +28,10 @@ const AuthService = {
     const user = JSON.parse(localStorage.getItem(user_key));
     return user;
   },
+
+  isSignedIn() {
+    return this.getUserData() !== null;
+  },
 };
 
 export default AuthService;

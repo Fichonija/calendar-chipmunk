@@ -66,7 +66,7 @@ const Calendar = () => {
         <Modal
           isVisible={isModalVisible}
           title="New event"
-          render={() => <EventForm onSubmit={handleEventSubmit} />}
+          body={<EventForm onSubmit={handleEventSubmit} />}
           onClose={() => setIsModalVisible(false)}
         />
       </>

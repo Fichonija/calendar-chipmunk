@@ -9,6 +9,11 @@ const useAuth = () => {
 const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
 
+  const signOut = () => {
+    AuthService.removeLoginData();
+    setUserData(null);
+  };
+
   const signIn = (loginResponse, callback) => {
     AuthService.saveLoginData({
       user: loginResponse.profileObj,
@@ -16,14 +21,9 @@ const AuthProvider = ({ children }) => {
       expiresAt: loginResponse.tokenObj.expires_at,
       expiresIn: loginResponse.tokenObj.expires_in,
     });
-    setTimeout(loginResponse.tokenObj.expires_in * 1000, signOut);
+    setTimeout(signOut, loginResponse.tokenObj.expires_in * 1000);
     setUserData({ user: loginResponse.profileObj, token: loginResponse.tokenObj.access_token });
     callback && callback();
-  };
-
-  const signOut = () => {
-    AuthService.removeLoginData();
-    setUserData(null);
   };
 
   let value = { userData, signIn, signOut };
