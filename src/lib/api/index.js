@@ -1,14 +1,12 @@
 import getWeekOfMonth from "date-fns/getWeekOfMonth";
-import AuthService from "./authService";
-import { CALENDAR_API_ROOT } from "../lib/constants";
+import AuthService from "../authService";
+import { CALENDAR_API_ROOT } from "../constants";
 
 export const fetchCalendarEvents = async (forNumberOfDays = 7) => {
   try {
-    const token = AuthService.getAccessToken();
-
-    const calendarEventsResponse = await fetch(getEventsApiUrl(forNumberOfDays), {
+    const calendarEventsResponse = await fetch(getEventsApiGetUrl(forNumberOfDays), {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${AuthService.getAccessToken()}`,
       },
     });
     const calendarEvents = await calendarEventsResponse.json();
@@ -20,18 +18,19 @@ export const fetchCalendarEvents = async (forNumberOfDays = 7) => {
   }
 };
 
-const getEventsApiUrl = (forNumberOfDays) => {
+const getEventsApiGetUrl = (forNumberOfDays) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const timeMax = new Date(today);
   timeMax.setDate(timeMax.getDate() + forNumberOfDays);
 
-  const user = AuthService.getUserData();
-
-  const eventsApiUrl = `${CALENDAR_API_ROOT}/${
-    user.email
-  }/events?timeMin=${today.toISOString()}&timeMax=${timeMax.toISOString()}&singleEvents=true&orderBy=startTime`;
+  const eventsApiUrl = `${getEventsApiBaseUrl()}?timeMin=${today.toISOString()}&timeMax=${timeMax.toISOString()}&singleEvents=true&orderBy=startTime`;
   return eventsApiUrl;
+};
+
+const getEventsApiBaseUrl = () => {
+  const user = AuthService.getUserData();
+  return `${CALENDAR_API_ROOT}/${user.email}/events`;
 };
 
 const getEventsGroup = (calendarEvents, groupBy = "day") => {
@@ -64,4 +63,16 @@ const groupEventsByDate = (events, groupBy = "day") => {
     }
   }
   return eventsGroup;
+};
+
+export const createCalendarEvent = async (event) => {
+  const createEventResponse = await fetch(getEventsApiBaseUrl(), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${AuthService.getAccessToken()}`,
+    },
+    body: JSON.stringify(event),
+  });
+  console.log("Created event: " + createEventResponse);
+  return createEventResponse.ok;
 };
