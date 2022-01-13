@@ -2,32 +2,38 @@ import { useEffect, useState } from "react";
 import Modal from "../../components/modal";
 import EventForm from "../../components/event/event-form";
 import EventList from "../../components/event/event-list";
+import { useAuth } from "../../lib/context";
 import { fetchCalendarEvents, createCalendarEvent, deleteCalendarEvent } from "../../lib/api";
 
 import "./calendar.css";
 
-const Calendar = (props) => {
+const Calendar = () => {
   const [eventsGroup, setEventsGroup] = useState([]);
   const [numberOfDays, setNumberOfDays] = useState(7);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [refreshEvents, setRefreshEvents] = useState(0);
+
+  const auth = useAuth();
 
   useEffect(() => {
     fetchCalendarEvents(numberOfDays).then((eventsResult) => setEventsGroup(eventsResult));
-  }, [numberOfDays, refreshEvents]);
+  }, [numberOfDays]);
 
   const handleEventSubmit = (event) => {
     console.log("[CREATE EVENT]: " + event);
-    createCalendarEvent(event).then((isCreated) => setRefreshEvents((value) => value + 1));
+    createCalendarEvent(event)
+      .then((isCreated) => fetchCalendarEvents(numberOfDays))
+      .then((eventsResult) => setEventsGroup(eventsResult));
     setIsModalVisible(false);
   };
 
   const handleEventDelete = (eventId) => {
     console.log("[DELETE EVENT]: " + eventId);
-    deleteCalendarEvent(eventId).then((isDeleted) => setRefreshEvents((value) => value + 1));
+    deleteCalendarEvent(eventId)
+      .then((isDeleted) => fetchCalendarEvents(numberOfDays))
+      .then((eventsResult) => setEventsGroup(eventsResult));
   };
 
-  if (eventsGroup) {
+  if (auth.userData) {
     return (
       <>
         <div className="calendar-header">
@@ -66,7 +72,7 @@ const Calendar = (props) => {
       </>
     );
   } else {
-    return <p>No user detected. Log in to see events</p>;
+    return <p>Login to see the calendar</p>;
   }
 };
 

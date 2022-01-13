@@ -1,24 +1,16 @@
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../lib/context";
 import { useLogin } from "../../lib/hooks";
-import AuthService from "../../lib/services";
 import { ReactComponent as GoogleIcon } from "./google.svg";
 import "./login.css";
 
 const Login = (props) => {
-  const handleLoginSuccess = (loginResponse) => {
-    console.log(loginResponse);
-    AuthService.saveLoginData({
-      user: loginResponse.profileObj,
-      token: loginResponse.tokenObj.access_token,
-      expiresAt: loginResponse.tokenObj.expires_at,
-      expiresIn: loginResponse.tokenObj.expires_in,
-    });
-    navigate("/calendar");
-  };
-  const handleLoginFailure = (loginResponse) => console.log(loginResponse);
-
+  const auth = useAuth();
   const navigate = useNavigate();
-  const { signIn } = useLogin(handleLoginSuccess, handleLoginFailure);
+  const { signIn } = useLogin(
+    (loginResponse) => auth.signIn(loginResponse, () => navigate("/calendar")),
+    (loginResponse) => console.log(loginResponse)
+  );
 
   return (
     <button onClick={signIn} className="login-button">

@@ -1,17 +1,23 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../../lib/hooks";
+import { useAuth } from "../../lib/context";
 import "./layout.css";
 
 const Layout = ({ children }) => {
-  const { user } = useAuth();
+  const auth = useAuth();
 
   return (
     <>
       <div className="header">
         <h1 className="header-title">Calendar Chipmunk</h1>
-        {/* {user ? <p className="header-user">{user.name}</p> : <p className="header-user">No user logged in</p>} */}
         <div className="header-user">
-          <Link to="login">Login</Link>
+          {auth.userData ? (
+            <>
+              <p>{auth.userData.user.name}</p>
+              <button onClick={auth.signOut}>Logout</button>
+            </>
+          ) : (
+            <Link to="login">Login</Link>
+          )}
         </div>
       </div>
       <div className="container">

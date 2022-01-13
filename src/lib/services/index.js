@@ -10,9 +10,6 @@ const AuthService = {
     localStorage.setItem(expiresAt_key, expiresAt);
     expiresIn *= 1000;
     localStorage.setItem(expiresIn_key, expiresIn);
-    this.isLoggedIn = true;
-
-    setTimeout(this.removeLoginData, expiresIn);
   },
 
   removeLoginData() {
@@ -20,7 +17,6 @@ const AuthService = {
     localStorage.removeItem(token_key);
     localStorage.removeItem(expiresAt_key);
     localStorage.removeItem(expiresIn_key);
-    this.isLoggedIn = false;
   },
 
   getAccessToken() {

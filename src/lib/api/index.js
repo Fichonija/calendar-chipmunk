@@ -3,17 +3,15 @@ import AuthService from "../services";
 import { CALENDAR_API_ROOT } from "../constants";
 
 export const fetchCalendarEvents = async (forNumberOfDays = 7) => {
-  try {
-    const calendarEventsResponse = await fetch(getEventsApiGetUrl(forNumberOfDays), {
-      headers: {
-        Authorization: `Bearer ${AuthService.getAccessToken()}`,
-      },
-    });
+  const calendarEventsResponse = await fetch(getEventsApiGetUrl(forNumberOfDays), {
+    headers: {
+      Authorization: `Bearer ${AuthService.getAccessToken()}`,
+    },
+  });
+  if (calendarEventsResponse.ok) {
     const calendarEvents = await calendarEventsResponse.json();
-
     return getEventsGroup(calendarEvents, forNumberOfDays >= 30 ? "week" : "day");
-  } catch (error) {
-    console.log(error.message);
+  } else {
     return null;
   }
 };
