@@ -37,11 +37,15 @@
 }
 
 .modal-body {
-  padding: 2em;
+  padding: 1em;
 }
 
 .modal-footer {
   padding: 1em;
+}
+
+.modal-footer button:not(:first-child) {
+  margin-left: 0.5rem;
 }
 
 .modal-content .close {

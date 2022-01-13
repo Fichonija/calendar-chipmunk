@@ -1,6 +1,6 @@
 import "./modal.css";
 
-const Modal = ({ isVisible, title, body, onClose }) => {
+const Modal = ({ isVisible, title, body, footer, onClose }) => {
   const isVisibleClassNames = isVisible ? "modal visible" : "modal";
 
   return (
@@ -13,7 +13,7 @@ const Modal = ({ isVisible, title, body, onClose }) => {
           </span>
         </div>
         <div className="modal-body">{body}</div>
-        <div className="modal-footer"></div>
+        <div className="modal-footer">{footer}</div>
       </div>
     </div>
   );
