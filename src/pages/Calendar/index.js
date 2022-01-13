@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "../../components/modal";
+import ConfirmModal from "../../components/modal/confirm-modal";
 import EventForm from "../../components/event/event-form";
 import EventList from "../../components/event/event-list";
 import { useAuth } from "../../lib/context";
@@ -10,7 +11,8 @@ import "./calendar.css";
 const Calendar = () => {
   const [eventsGroup, setEventsGroup] = useState([]);
   const [numberOfDays, setNumberOfDays] = useState(7);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isNewEventModalVisible, setIsNewEventModalVisible] = useState(false);
+  const [eventIdForDelete, setEventIdForDelete] = useState(null);
 
   const auth = useAuth();
 
@@ -23,14 +25,15 @@ const Calendar = () => {
     createCalendarEvent(event)
       .then((isCreated) => fetchCalendarEvents(numberOfDays))
       .then((eventsResult) => setEventsGroup(eventsResult));
-    setIsModalVisible(false);
+    setIsNewEventModalVisible(false);
   };
 
-  const handleEventDelete = (eventId) => {
-    console.log("[DELETE EVENT]: " + eventId);
-    deleteCalendarEvent(eventId)
+  const handleEventDelete = () => {
+    console.log("[DELETE EVENT]: " + eventIdForDelete);
+    deleteCalendarEvent(eventIdForDelete)
       .then((isDeleted) => fetchCalendarEvents(numberOfDays))
       .then((eventsResult) => setEventsGroup(eventsResult));
+    setEventIdForDelete(null);
   };
 
   if (auth.userData) {
@@ -46,7 +49,7 @@ const Calendar = () => {
             </select>{" "}
             days.
           </p>
-          <button onClick={() => setIsModalVisible(true)}>Add event</button>
+          <button onClick={() => setIsNewEventModalVisible(true)}>Add event</button>
         </div>
         <div className="calendar-content">
           {eventsGroup.length === 0 ? (
@@ -58,16 +61,23 @@ const Calendar = () => {
                 title={eventGroup.key}
                 events={eventGroup.events}
                 showEventDates={numberOfDays >= 30}
-                onEventClose={handleEventDelete}
+                onEventClose={(eventId) => setEventIdForDelete(eventId)}
               ></EventList>
             ))
           )}
         </div>
         <Modal
-          isVisible={isModalVisible}
+          isVisible={isNewEventModalVisible}
           title="New event"
           body={<EventForm onSubmit={handleEventSubmit} />}
-          onClose={() => setIsModalVisible(false)}
+          onClose={() => setIsNewEventModalVisible(false)}
+        />
+        <ConfirmModal
+          isVisible={eventIdForDelete !== null}
+          title="Delete event?"
+          body={<p>This action will delete the selected event. Do you wish to continue?</p>}
+          onConfirm={handleEventDelete}
+          onClose={() => setEventIdForDelete(null)}
         />
       </>
     );
