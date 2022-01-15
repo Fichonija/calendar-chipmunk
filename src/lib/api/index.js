@@ -1,5 +1,5 @@
 import getWeekOfMonth from "date-fns/getWeekOfMonth";
-import AuthService from "../services";
+import { AuthService } from "../services";
 import { CALENDAR_API_ROOT } from "../constants";
 
 export const fetchCalendarEvents = async (forNumberOfDays = 7) => {
@@ -9,12 +9,12 @@ export const fetchCalendarEvents = async (forNumberOfDays = 7) => {
 
   const calendarEventsResponse = await fetch(getEventsApiGetUrl(forNumberOfDays), {
     headers: {
-      Authorization: `Bearer ${AuthService.getAccessToken()}`,
+      Authorization: `Bearer ${AuthService.getToken()}`,
     },
   });
   if (calendarEventsResponse.ok) {
     const calendarEvents = await calendarEventsResponse.json();
-    return getEventsGroup(calendarEvents, forNumberOfDays >= 30 ? "week" : "day");
+    return getEventGroups(calendarEvents, forNumberOfDays >= 30 ? "week" : "day");
   } else {
     return null;
   }
@@ -31,14 +31,14 @@ const getEventsApiGetUrl = (forNumberOfDays) => {
 };
 
 const getEventsApiBaseUrl = () => {
-  const user = AuthService.getUserData();
+  const user = AuthService.getUser();
   return `${CALENDAR_API_ROOT}/${user.email}/events`;
 };
 
-const getEventsGroup = (calendarEvents, groupBy = "day") => {
+const getEventGroups = (calendarEvents, groupBy = "day") => {
   const events = calendarEvents.items.map((event) => normalizeEvent(event));
-  const eventsGroup = groupEventsByDate(events, groupBy);
-  return eventsGroup;
+  const eventGroups = groupEventsByDate(events, groupBy);
+  return eventGroups;
 };
 
 const normalizeEvent = (event) => {
@@ -46,7 +46,7 @@ const normalizeEvent = (event) => {
 };
 
 const groupEventsByDate = (events, groupBy = "day") => {
-  const eventsGroup = [];
+  const eventGroup = [];
 
   for (const event of events) {
     const key =
@@ -54,38 +54,44 @@ const groupEventsByDate = (events, groupBy = "day") => {
         ? event.start.toLocaleString("hr-HR", { dateStyle: "full" })
         : `${event.start.toLocaleString("hr-HR", { month: "long" })}, ${getWeekOfMonth(event.start)}. tjedan`;
 
-    const foundEvent = eventsGroup.find((eg) => eg.key === key);
+    const foundEvent = eventGroup.find((eg) => eg.key === key);
     if (foundEvent) {
       foundEvent.events.push(event);
     } else {
-      eventsGroup.push({
+      eventGroup.push({
         key,
         events: [event],
       });
     }
   }
-  return eventsGroup;
+  return eventGroup;
 };
 
 export const createCalendarEvent = async (event) => {
+  if (!AuthService.isSignedIn()) {
+    return;
+  }
+
   const createEventResponse = await fetch(getEventsApiBaseUrl(), {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${AuthService.getAccessToken()}`,
+      Authorization: `Bearer ${AuthService.getToken()}`,
     },
     body: JSON.stringify(event),
   });
-  console.log("Created event: " + createEventResponse);
   return createEventResponse.ok;
 };
 
 export const deleteCalendarEvent = async (eventId) => {
+  if (!AuthService.isSignedIn()) {
+    return;
+  }
+
   const deleteEventResponse = await fetch(`${getEventsApiBaseUrl()}/${eventId}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${AuthService.getAccessToken()}`,
+      Authorization: `Bearer ${AuthService.getToken()}`,
     },
   });
-  console.log(deleteEventResponse);
   return deleteEventResponse.ok;
 };

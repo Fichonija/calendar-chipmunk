@@ -17,11 +17,12 @@ const Calendar = () => {
   const auth = useAuth();
 
   useEffect(() => {
-    fetchCalendarEvents(numberOfDays).then((eventsResult) => setEventGroups(eventsResult));
-  }, [numberOfDays]);
+    if (auth.user) {
+      fetchCalendarEvents(numberOfDays).then((eventsResult) => setEventGroups(eventsResult));
+    }
+  }, [auth.user, numberOfDays]);
 
   const handleEventSubmit = (event) => {
-    console.log("[CREATE EVENT]: " + event);
     createCalendarEvent(event)
       .then((isCreated) => fetchCalendarEvents(numberOfDays))
       .then((eventsResult) => setEventGroups(eventsResult));
@@ -29,7 +30,6 @@ const Calendar = () => {
   };
 
   const handleEventDelete = () => {
-    console.log("[DELETE EVENT]: " + eventIdForDelete);
     deleteCalendarEvent(eventIdForDelete)
       .then((isDeleted) => fetchCalendarEvents(numberOfDays))
       .then((eventsResult) => setEventGroups(eventsResult));
@@ -54,8 +54,7 @@ const Calendar = () => {
       />
     </>
   );
-
-  if (auth.userData) {
+  if (auth.user) {
     return (
       <>
         <CalendarHeader
