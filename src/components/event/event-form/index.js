@@ -1,6 +1,19 @@
+import { useRef, useState } from "react";
 import "./eventForm.css";
 
 const EventForm = ({ onSubmit }) => {
+  const [validationError, setValidationError] = useState(null);
+  const formRef = useRef(null);
+
+  const isEventTimeValid = (event) => {
+    return new Date(event.start.dateTime) <= new Date(event.end.dateTime);
+  };
+
+  const resetForm = () => {
+    formRef.current.reset();
+    setValidationError(null);
+  };
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
@@ -15,13 +28,16 @@ const EventForm = ({ onSubmit }) => {
         timeZone: "Europe/Belgrade",
       },
     };
-    onSubmit(newEvent);
-
-    event.target.reset();
+    if (isEventTimeValid(newEvent)) {
+      onSubmit(newEvent);
+      resetForm();
+    } else {
+      setValidationError("Event end time must be after start time.");
+    }
   };
 
   return (
-    <form id="event-form" onSubmit={handleFormSubmit}>
+    <form id="event-form" ref={formRef} onSubmit={handleFormSubmit}>
       <div className="event-form-section">
         <label htmlFor="event-form-input-summary">Event summary</label>
         <input id="event-form-input-summary" name="event-form-input-summary" type="text" required />
@@ -40,6 +56,9 @@ const EventForm = ({ onSubmit }) => {
       </div>
       <div className="event-form-section">
         <button type="submit">Create event</button>
+      </div>
+      <div className="event-form-validation-error">
+        <p>{validationError}</p>
       </div>
     </form>
   );
