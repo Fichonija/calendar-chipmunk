@@ -9,10 +9,8 @@ const useAuth = () => {
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  /*
-    called from App.js, handles sign in with redirect
-    if user signed in, sets user data in context 
-  */
+  //  called from App.js, handles sign in with redirect
+  //  if user signed in, sets user data in context
   const init = () => {
     AuthService.init((isInitialized) => {
       if (AuthService.isSignedIn()) {

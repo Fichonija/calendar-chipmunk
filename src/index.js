@@ -6,7 +6,6 @@ import { AuthProvider } from "./lib/context";
 import App from "./App";
 import Login from "./pages/login";
 import Calendar from "./pages/calendar";
-import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
 ReactDOM.render(
@@ -26,5 +25,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
-
-reportWebVitals();
