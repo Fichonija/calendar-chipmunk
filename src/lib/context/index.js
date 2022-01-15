@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
   const init = () => {
     AuthService.init((isInitialized) => {
       if (AuthService.isSignedIn()) {
-        AuthService.setTokenRefresh();
+        AuthService.initTokenRefresh();
         setUser(AuthService.getUser());
       }
     });

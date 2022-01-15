@@ -66,8 +66,11 @@ const AuthService = {
     return this.gapi.client.getToken().access_token;
   },
 
-  setTokenRefresh() {
-    this.tokenRefreshTimer = setTimeout(this.user.reloadAuthResponse(), this.gapi.client.getToken().expires_in);
+  initTokenRefresh() {
+    this.tokenRefreshTimer = setTimeout(() => {
+      this.user.reloadAuthResponse();
+      this.initTokenRefresh();
+    }, this.gapi.client.getToken().expires_in * 1000);
   },
 };
 
