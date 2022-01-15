@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import AuthService from "../services";
+import { AuthService } from "../services";
 
 let AuthContext = createContext(null);
 const useAuth = () => {
@@ -7,26 +7,32 @@ const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-  const [userData, setUserData] = useState(null);
+  const [user, setUser] = useState(null);
+
+  /*
+    called from App.js, handles sign in with redirect
+    if user signed in, sets user data in context 
+  */
+  const init = () => {
+    AuthService.init((isInitialized) => {
+      if (AuthService.isSignedIn()) {
+        AuthService.setTokenRefresh();
+        setUser(AuthService.getUser());
+      }
+    });
+  };
 
   const signOut = () => {
-    AuthService.removeLoginData();
-    setUserData(null);
-  };
-
-  const signIn = (loginResponse, callback) => {
-    AuthService.saveLoginData({
-      user: loginResponse.profileObj,
-      token: loginResponse.tokenObj.access_token,
-      expiresAt: loginResponse.tokenObj.expires_at,
-      expiresIn: loginResponse.tokenObj.expires_in,
+    AuthService.signOut().then((res) => {
+      setUser(null);
     });
-    setTimeout(signOut, loginResponse.tokenObj.expires_in * 1000);
-    setUserData({ user: loginResponse.profileObj, token: loginResponse.tokenObj.access_token });
-    callback && callback();
   };
 
-  let value = { userData, signIn, signOut };
+  const signIn = () => {
+    AuthService.signInRedirect();
+  };
+
+  let value = { user, signIn, signOut, init };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
