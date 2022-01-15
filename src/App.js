@@ -8,7 +8,7 @@ const App = () => {
   useEffect(() => auth.init(), []);
   return (
     <Layout>
-      <h1 className="text-center">Welcome to Calendar Chipmunk</h1>
+      <h1 className="text-center">Calendar Chipmunk</h1>
       <Outlet />
     </Layout>
   );
