@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.header-nav,
+.header-user {
+  margin: 0;
+  padding: 1rem;
+}
+
+.header-nav a {
+  color: white;
+  padding: 0 1rem;
+  border-radius: 0;
+  background-color: black;
+}
