@@ -3,6 +3,7 @@ import CalendarHeader from "./calendar-header";
 import CalendarContent from "./calendar-content";
 import { Modal, ConfirmModal } from "../../components/modal";
 import { EventForm, EventList } from "../../components/event";
+import ErrorBoundary from "../../components/error";
 import { useAuth } from "../../lib/context";
 import { fetchCalendarEvents, createCalendarEvent, deleteCalendarEvent } from "../../lib/api";
 
@@ -62,19 +63,21 @@ const Calendar = () => {
           onNumberOfDaysChanged={(newNumberOfDays) => setNumberOfDays(newNumberOfDays)}
           onAddEventClicked={() => setIsNewEventModalVisible(true)}
         />
-        <CalendarContent
-          numberOfDays={numberOfDays}
-          eventGroups={eventGroups}
-          renderEventGroup={(eventGroup) => (
-            <EventList
-              key={eventGroup.key}
-              title={eventGroup.key}
-              events={eventGroup.events}
-              showEventDates={numberOfDays >= 30}
-              onEventClose={(eventId) => setEventIdForDelete(eventId)}
-            />
-          )}
-        />
+        <ErrorBoundary>
+          <CalendarContent
+            numberOfDays={numberOfDays}
+            eventGroups={eventGroups}
+            renderEventGroup={(eventGroup) => (
+              <EventList
+                key={eventGroup.key}
+                title={eventGroup.key}
+                events={eventGroup.events}
+                showEventDates={numberOfDays >= 30}
+                onEventClose={(eventId) => setEventIdForDelete(eventId)}
+              />
+            )}
+          />
+        </ErrorBoundary>
         {modals}
       </>
     );

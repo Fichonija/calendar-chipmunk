@@ -8,7 +8,7 @@ const CalendarHeader = ({ numberOfDays, onNumberOfDaysChanged, onAddEventClicked
           <option value="7">7</option>
           <option value="30">30</option>
         </select>{" "}
-        days.
+        {numberOfDays > 1 ? "days" : "day"}.
       </p>
       <button onClick={onAddEventClicked}>Add event</button>
     </div>

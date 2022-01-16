@@ -16,7 +16,7 @@ export const fetchCalendarEvents = async (forNumberOfDays = 7) => {
     const calendarEvents = await calendarEventsResponse.json();
     return getEventGroups(calendarEvents, forNumberOfDays >= 30 ? "week" : "day");
   } else {
-    return null;
+    throwError(calendarEventsResponse);
   }
 };
 
@@ -67,6 +67,11 @@ const groupEventsByDate = (events, groupBy = "day") => {
   return eventGroup;
 };
 
+const throwError = async (errorResponse) => {
+  const error = (await errorResponse.json()).error;
+  throw new Error(`${error.status}: ${error.message}`);
+};
+
 export const createCalendarEvent = async (event) => {
   if (!AuthService.isSignedIn()) {
     return;
@@ -79,7 +84,9 @@ export const createCalendarEvent = async (event) => {
     },
     body: JSON.stringify(event),
   });
-  return createEventResponse.ok;
+  if (!createEventResponse.ok) {
+    throwError(createEventResponse);
+  }
 };
 
 export const deleteCalendarEvent = async (eventId) => {
@@ -93,5 +100,7 @@ export const deleteCalendarEvent = async (eventId) => {
       Authorization: `Bearer ${AuthService.getToken()}`,
     },
   });
-  return deleteEventResponse.ok;
+  if (!deleteEventResponse.ok) {
+    throwError(deleteEventResponse);
+  }
 };
