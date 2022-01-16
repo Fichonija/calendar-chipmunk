@@ -11,11 +11,12 @@ const AuthProvider = ({ children }) => {
 
   //  called from App.js, handles sign in with redirect
   //  if user signed in, sets user data in context
-  const init = () => {
+  const init = (callback) => {
     AuthService.init((isInitialized) => {
       if (AuthService.isSignedIn()) {
         AuthService.initTokenRefresh();
         setUser(AuthService.getUser());
+        callback && callback();
       }
     });
   };
